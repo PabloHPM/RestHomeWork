@@ -3,6 +3,7 @@ package dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @Data
 public class OrderDto {
@@ -13,13 +14,17 @@ public class OrderDto {
     private String status;
     private String complete;
 
-    public OrderDto(){
+    public OrderDto() {
         this.id = 220;
-        this.petId = 1;
-        this.quantity = 12;
+        this.petId = getRndValue();
+        this.quantity = getRndValue();
         this.shipDate = String.valueOf(LocalDateTime.now()).concat("+0000");
         this.status = "Available";
-        this.complete = "false";
+        this.complete = "True";
+    }
+
+    private int getRndValue() {
+        return new Random().nextInt(100);
     }
 
 }

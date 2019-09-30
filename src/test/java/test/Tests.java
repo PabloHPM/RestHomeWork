@@ -1,6 +1,8 @@
 package test;
 
 import config.SwagerStore;
+import io.restassured.http.Headers;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -13,7 +15,17 @@ public class Tests {
 
     @Test
     void checkInventoryStatusCode(){
-        assertEquals(swagerStore.getInventory().getStatusCode(), SC_OK);
+        Response response = swagerStore.getInventory();
+
+        assertEquals(response.getStatusCode(), SC_OK);
+//        assertTrue(response.getBody().jsonPath().getInt("sold"));
+    }
+
+    @Test
+    void checkInventoryHeaders(){
+        Headers headers = swagerStore.getInventory().headers();
+        assertEquals("*", headers.get("Access-Control-Allow-Origin").getValue());
+        assertEquals("GET, POST, DELETE, PUT", headers.get("Access-Control-Allow-Methods").getValue());
     }
 
     @Test
