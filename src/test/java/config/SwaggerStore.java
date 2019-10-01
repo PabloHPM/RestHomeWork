@@ -1,6 +1,6 @@
 package config;
 
-import dto.OrderDto;
+import dto.OrderDTO;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
@@ -9,10 +9,9 @@ import io.restassured.specification.RequestSpecification;
 
 import static config.ConfigUrl.*;
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.SC_OK;
 
 
-public class SwagerStore {
+public class SwaggerStore {
 
     public Response getInventory() {
         return spec()
@@ -23,43 +22,34 @@ public class SwagerStore {
                 .response();
     }
 
-    void placeAnOrder() {
-        spec()
-                .body(new OrderDto())
+    public Response placeAnOrder(OrderDTO orderDto) {
+        return spec()
+                .body(orderDto)
                 .when()
                 .post(PLACE_ORDER)
                 .then()
                 .extract()
-                .response()
-                .then()
-                .assertThat()
-                .statusCode(SC_OK);
+                .response();
     }
 
-    void getAnOrder() {
-        spec()
-                .pathParam("orderId","220")
+    public Response getAnOrder(int id) {
+        return spec()
+                .pathParam("orderId",id)
                 .when()
                 .get(ORDER_ID)
                 .then()
                 .extract()
-                .response()
-                .then()
-                .assertThat()
-                .statusCode(SC_OK);
+                .response();
     }
 
-    void deleteAnOrder() {
-        spec()
-                .pathParam("orderId","220")
+    public Response deleteAnOrder(int id) {
+        return spec()
+                .pathParam("orderId", id)
                 .when()
                 .delete(ORDER_ID)
                 .then()
                 .extract()
-                .response()
-                .then()
-                .assertThat()
-                .statusCode(SC_OK);
+                .response();
     }
 
     private RequestSpecification spec() {
